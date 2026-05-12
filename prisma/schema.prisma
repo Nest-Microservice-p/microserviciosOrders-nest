@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  moduleFormat    = "cjs"
+
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+
+enum EstadosOrden{
+  PENDIENTE
+  ENTREGADA
+  PAGADA
+  CANCELADA
+}
+
+
+
+model Orden{
+  id    String     @default(uuid()) @id
+  costoTotal Float  
+  objetosTotales  Int
+  estado EstadosOrden @default(PENDIENTE)
+  paid Boolean @default(false)
+  paidAt DateTime?
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ordenItem OrdenItem[]
+}
+
+
+model OrdenItem{
+  id String @default(uuid()) @id
+  productId Int 
+  cantidad Int
+  price Int
+
+  orden Orden? @relation(fields:[orderId], references:[id]) 
+  orderId String?
+}
