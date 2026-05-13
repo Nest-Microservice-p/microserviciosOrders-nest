@@ -11,7 +11,10 @@ import { firstValueFrom } from 'rxjs';
 export class OrdenesService extends PrismaClient implements OnModuleInit {
   private readonly logger = new Logger('BaseDatos-Service');
 
-  constructor(@Inject(envs.Product_Service) private readonly productClient:ClientProxy) {
+  //  constructor(@Inject(envs.Product_Service) private readonly productClient:ClientProxy) {
+
+
+  constructor(@Inject(envs.NAT_SERVICE) private readonly productClient:ClientProxy) {
     const adapter = new PrismaPg({
       connectionString: envs.DATABASE_URL,
     });
