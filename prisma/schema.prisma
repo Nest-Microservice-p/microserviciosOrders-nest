@@ -29,14 +29,12 @@ model Orden{
   costoTotal Float  
   objetosTotales  Int
   estado EstadosOrden @default(PENDIENTE)
-  paid Boolean @default(false)
-  paidAt DateTime?
-
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   ordenItem OrdenItem[]
+  ordenPago OrdenPago?
 }
 
 
@@ -48,4 +46,15 @@ model OrdenItem{
 
   orden Orden? @relation(fields:[orderId], references:[id]) 
   orderId String?
+}
+
+model OrdenPago{
+  id String @default(uuid()) @id
+  orden Orden @relation(fields:[orderId], references:[id]) 
+  orderId String @unique
+
+  urlRecibo String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
