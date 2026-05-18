@@ -3,11 +3,11 @@ import { CreateOrdeneDto } from './dto/create-ordene.dto';
 import { UpdateOrdeneDto } from './dto/update-ordene.dto';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { envs } from 'src/config';
-import { PrismaClient } from '@prisma/client';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { queryPaginator } from 'src/common/dto/dtoQuery';
 import { firstValueFrom } from 'rxjs';
-import { orderProducts } from './dto/interfaces/orderProducts';
+import { orderProducts, paidOrden } from './dto/interfaces/orderProducts';
+import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class OrdenesService extends PrismaClient implements OnModuleInit {
   private readonly logger = new Logger('BaseDatos-Service');
@@ -135,4 +135,18 @@ export class OrdenesService extends PrismaClient implements OnModuleInit {
     }
   }
 
+  async ordenPagada(ordePay:paidOrden){
+    await this.findOne(ordePay.orderId)
+
+
+    return this.orden.update({where:{id:ordePay.orderId},data:{estado:"PAGADA",
+    
+    ordenPago:{create:{
+        stripePaymentId:ordePay.idPaymentStripe,
+        urlRecibo:ordePay.urlStripe 
+      },
+    }
+    }
+  })
+  }
 }

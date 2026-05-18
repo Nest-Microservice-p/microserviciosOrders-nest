@@ -4,6 +4,7 @@ import { OrdenesService } from './ordenes.service';
 import { CreateOrdeneDto } from './dto/create-ordene.dto';
 import { UpdateOrdeneDto } from './dto/update-ordene.dto';
 import { queryPaginator } from 'src/common/dto/dtoQuery';
+import { paidOrden } from './dto/interfaces/orderProducts';
 
 @Controller()
 export class OrdenesController {
@@ -33,8 +34,9 @@ export class OrdenesController {
   }
 
   @EventPattern('payment.success')
-  paymentSuccess(@Payload() orderPaymentDto:any){
+  paymentSuccess(@Payload() orderPaymentDto:paidOrden){
     console.log(orderPaymentDto)
+    return this.ordenesService.ordenPagada(orderPaymentDto)
   }
 
 }

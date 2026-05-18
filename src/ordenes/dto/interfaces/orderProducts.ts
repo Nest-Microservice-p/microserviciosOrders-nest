@@ -1,4 +1,5 @@
 import { EstadosOrden } from "@prisma/client";
+import { IsString, IsUUID } from "class-validator";
 
 
 export interface orderProducts{
@@ -12,8 +13,19 @@ export interface orderProducts{
     costoTotal: number;
     objetosTotales: number;
     estado: EstadosOrden;
-    paid: boolean;
-    paidAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
+}
+
+
+export class paidOrden{
+    @IsString()
+    @IsUUID()
+    orderId: string
+
+    @IsString()
+    idPaymentStripe: string
+
+    @IsString()
+    urlStripe: string 
 }

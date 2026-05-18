@@ -52,7 +52,7 @@ model OrdenPago{
   id String @default(uuid()) @id
   orden Orden @relation(fields:[orderId], references:[id]) 
   orderId String @unique
-
+  stripePaymentId String
   urlRecibo String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
