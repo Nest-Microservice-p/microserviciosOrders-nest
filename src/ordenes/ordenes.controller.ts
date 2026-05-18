@@ -10,8 +10,10 @@ export class OrdenesController {
   constructor(private readonly ordenesService: OrdenesService) {}
 
   @MessagePattern('createOrden')
-  create(@Payload() createOrdeneDto: CreateOrdeneDto) {
-    return this.ordenesService.create(createOrdeneDto)
+  async create(@Payload() createOrdeneDto: CreateOrdeneDto) {
+    const order= await this.ordenesService.create(createOrdeneDto)
+
+    return this.ordenesService.createPaymentSession(order)
   }
 
   @MessagePattern('findAllOrdenes')

@@ -7,6 +7,7 @@ import { PrismaClient } from '@prisma/client';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { queryPaginator } from 'src/common/dto/dtoQuery';
 import { firstValueFrom } from 'rxjs';
+import { orderProducts } from './dto/interfaces/orderProducts';
 @Injectable()
 export class OrdenesService extends PrismaClient implements OnModuleInit {
   private readonly logger = new Logger('BaseDatos-Service');
@@ -119,6 +120,19 @@ export class OrdenesService extends PrismaClient implements OnModuleInit {
 
 
     return this.orden.update({where:{id:updateOrdeneDto.id},data:{estado:updateOrdeneDto.estado}})
+  }
+
+  async createPaymentSession(orden:orderProducts){
+
+    const paymentSession=await firstValueFrom(this.productClient.send('createPayment.method',{
+      orderId:orden.id,
+      monedaType:'mxn',
+        itemsPayment:orden.ordenItem.map(or=>({name:or.nombreProducto,precio:or.price,cantidad:or.cantidad}))
+    }))
+
+    return {
+      paymentSession
+    }
   }
 
 }
