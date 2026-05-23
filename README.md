@@ -56,6 +56,12 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+## Docker Produccion
+Si se quiere llevar a produccion con una base de datos local, recuerde descomentar el codigo de abajo de y comentar el previo,
+
+# Sugerencia
+Correr el contendor de la base de datos del repositorio postgresql
+
 
 ## Deployment
 
